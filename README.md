@@ -26,6 +26,12 @@ Install: you must install jcrop manually, so that you have:
   /path/to/extensions/ca.bidon.imagecrop/jcrop/js/jquery.Jcrop.min.js
   /path/to/extensions/ca.bidon.imagecrop/jcrop/css/jquery.Jcrop.min.css
 
+Contributors
+------------
+
+* CiviCRM extension/integration written by Mathieu Lutfy (http://www.bidon.ca/about)
+* Sponsored in part by Ixiam (http://www.ixiam.com/en)
+
 Copyright
 ---------
 
