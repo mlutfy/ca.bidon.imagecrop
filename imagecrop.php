@@ -103,6 +103,9 @@ function imagecrop_civicrm_pageRun(&$page) {
 function imagecrop_civicrm_jcrop_enable() {
   CRM_Core_Resources::singleton()
     ->addScriptFile('ca.bidon.imagecrop', 'imagecrop.js')
+    ->addStyleFile('ca.bidon.imagecrop', 'imagecrop.css');
+
+  CRM_Core_Resources::singleton()
     ->addScriptFile('ca.bidon.imagecrop', 'jcrop/js/jquery.Jcrop.min.js')
     ->addStyleFile('ca.bidon.imagecrop', 'jcrop/css/jquery.Jcrop.min.css');
 }
