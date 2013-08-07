@@ -1,11 +1,16 @@
 CiviCRM image crop extension
 ============================
 
-This is a test extension integrating Jcrop with CiviCRM.
-It is not ready for production use and does not do much.
+The extension integrates Jcrop with CiviCRM.
+https://github.com/mlutfy/ca.bidon.imagecrop
 
-The intention is to allow crop & scale on some image fields in CiviCRM.
-For now, it's applied only to the Contact "image_URL" field.
+It allows to crop and scale image fields in CiviCRM.
+For now, it works only with the Contact "image_URL" field.
+
+This is a fairly new extension and has not been widely tested yet.
+
+More information about Jcrop can be found here:
+http://deepliquid.com/content/Jcrop_Download.html
 
 Example
 -------
@@ -18,13 +23,25 @@ Installation
 ------------
 
 * Enable this extension in CiviCRM (Administer > System > Extensions)
-* Download Jcrop locally
+* Jcrop is bundled in this extension, to avoid having to download separately.
 
-Jcrop can be found here: http://deepliquid.com/content/Jcrop_Download.html
+Technical details
+-----------------
 
-Install: you must install jcrop manually, so that you have:
-  /path/to/extensions/ca.bidon.imagecrop/jcrop/js/jquery.Jcrop.min.js
-  /path/to/extensions/ca.bidon.imagecrop/jcrop/css/jquery.Jcrop.min.css
+When cropping, the extension sends an ajax request to the server with the
+contact ID and a set of coordinates for the cropping.
+
+A new image is saved in a "imagecrop" subdirectory of customFileUploadDir
+(ex: files/civicrm/custom/imagecrop). The directory is created if necessary.
+
+The original image is always kept, to reduce the risks in case of mistake.
+The image is swapped when viewing the contact record (in hook_civicrm_pageRun).
+CiviCRM doesn't have a "load" hook for contacts (similar to node_load in Drupal),
+so at some point, we may alter the image_URL value in the database, and assume
+that we can rollback to the original by removing "imagecrop" from the URL.
+
+(it may be cleaner to keep a separate SQL table with the "original" file name,
+but that means adding a lot of code, so will only do it if necessary)
 
 Contributors
 ------------
