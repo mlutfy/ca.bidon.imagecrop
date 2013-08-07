@@ -38,7 +38,6 @@ function imagecrop_civicrm_enable(selector) {
       title: ts("Test title", {domain: "ca.bidon.imagecrop"}),
       width: 1000,
       height: 550,
-      aspectRatio: xsize / ysize,
       modal: true
     });
   
@@ -64,6 +63,7 @@ function imagecrop_civicrm_enable(selector) {
     jQuery('.crm-imagecrop-dialog .crm-imagecrop-dialog-main img').Jcrop({
       boxWidth: 640,
       boxHeight: 480,
+      aspectRatio: xsize / ysize,
       onChange: crmImageCropUpdatePreview,
       onSelect: crmImageCropUpdatePreview
     }, function(){
