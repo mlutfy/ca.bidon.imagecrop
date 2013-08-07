@@ -92,7 +92,13 @@ function imagecrop_civicrm_pageRun(&$page) {
 
   if ($class_name == 'CRM_Contact_Page_View_Summary') {
     // TODO: enable for a specific selector. Currently enables on '.crm-contact_image a img'.
-    imagecrop_civicrm_jcrop_enable();
+    $smarty = CRM_Core_Smarty::singleton();
+    $imageURL = $smarty->_tpl_vars['imageURL'];
+
+    if ($imageURL) {
+      $smarty->assign('imageCropImageURL', $imageURL);
+      imagecrop_civicrm_jcrop_enable();
+    }
   }
 }
 
@@ -108,5 +114,9 @@ function imagecrop_civicrm_jcrop_enable() {
   CRM_Core_Resources::singleton()
     ->addScriptFile('ca.bidon.imagecrop', 'jcrop/js/jquery.Jcrop.min.js')
     ->addStyleFile('ca.bidon.imagecrop', 'jcrop/css/jquery.Jcrop.min.css');
+
+  CRM_Core_Region::instance('page-body')->add(array(
+    'template' => 'CRM/ImageCrop/Ajax/popup.tpl',
+  ));
 }
 

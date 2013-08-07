@@ -11,21 +11,31 @@ function imagecrop_civicrm_enable(selector) {
   // FIXME: this should still be in a 'a', for sanity.
   cj('.crm-contact_image a img').appendTo('.crm-contact_image');
 
-  // Create a hidden dialog that will popup when we click on the contact image
-  var imgsrc = cj('.crm-contact_image img').attr('src');
-  var submit_text = ts('Crop', {context: 'ca.bidon.imagecrop'});
-
-  cj('.crm-contact_image').append('<div style="display: none;" class="crm-imagecrop-dialog crm-container"></div>');
-  cj('.crm-contact_image .crm-imagecrop-dialog').append('<div class="crm-imagecrop-dialog-preview-pane"><div class="crm-imagecrop-dialog-preview-container"><img src="' + imgsrc + '" /></div></div>');
-  cj('.crm-contact_image .crm-imagecrop-dialog').append('<div class="crm-imagecrop-buttons"><input type="submit" name="crm-imagecrop-submit" value="' + submit_text + '" /></div>');
-  cj('.crm-contact_image .crm-imagecrop-dialog').append('<div class="crm-imagecrop-close"><a href="#">' + ts('Close') + '</a></div>');
-  cj('.crm-contact_image .crm-imagecrop-dialog').append('<div class="crm-imagecrop-dialog-main"><img src="' + imgsrc + '" /></div>');
-
+  // Popup image cropping feature when we click on the contact image.
+  // The HTML for the popup itself was added by imagecrop.php in the page footer area.
   cj('.crm-contact_image img').click(function() {
+    cj('.crm-imagecrop-dialog').dialog({
+      title: ts("Test title", {domain: "ca.bidon.imagecrop"}),
+      width: 1000,
+      height: 550,
+      modal: true,
+      open: function() {
+        cj('.crm-imagecrop-dialog .crm-imagecrop-close a').click(function() {
+          cj('.crm-imagecrop-dialog').dialog('close');
+        });
+        cj('.crm-imagecrop-buttons input[name="crm-imagecrop-crop"]').click(function() {
+          console.log('test');
+          return false;
+        });
+      },
+      close: function() {
+      }
+    });
+  
     // c.f. https://github.com/tapmodo/Jcrop/blob/master/demos/tutorial3.html
     // Create variables (in this scope) to hold the API and image size
     var jcrop_api, boundx, boundy,
-  
+
     // Grab some information about the preview pane
     $preview = cj('.crm-imagecrop-dialog-preview-pane'),
     $pcnt = cj('.crm-imagecrop-dialog-preview-container'),
@@ -33,17 +43,6 @@ function imagecrop_civicrm_enable(selector) {
   
     xsize = $pcnt.width(),
     ysize = $pcnt.height();
-
-    cj('.crm-imagecrop-dialog').dialog({
-      title: ts("Test title", {domain: "ca.bidon.imagecrop"}),
-      width: 1000,
-      height: 550,
-      modal: true
-    });
-  
-    cj('.crm-imagecrop-dialog .crm-imagecrop-close a').click(function() {
-      cj('.crm-imagecrop-dialog').dialog('close');
-    });
   
     function crmImageCropUpdatePreview(c) {
       if (parseInt(c.w) > 0) {
