@@ -23,9 +23,14 @@ function imagecrop_civicrm_enable(selector) {
         cj('.crm-imagecrop-dialog .crm-imagecrop-close a').click(function() {
           cj('.crm-imagecrop-dialog').dialog('close');
         });
-        cj('.crm-imagecrop-buttons input[name="crm-imagecrop-crop"]').click(function() {
-          console.log('test');
-          return false;
+        cj('#crm-imagecrop-form').ajaxForm({
+          url: CRM.url('civicrm/imagecrop'),
+          dataType: 'json',
+          success: function(response) {
+            CRM.alert('yay: ' + response.coucou);
+            console.log(response);
+            cj('.crm-imagecrop-dialog').dialog('close');
+          }
         });
       },
       close: function() {
@@ -45,6 +50,15 @@ function imagecrop_civicrm_enable(selector) {
     ysize = $pcnt.height();
   
     function crmImageCropUpdatePreview(c) {
+      // Save coords for form submit
+      cj('form#crm-imagecrop-form input#crm-imagecrop-x1').val(c.x);
+      cj('form#crm-imagecrop-form input#crm-imagecrop-x2').val(c.x2);
+      cj('form#crm-imagecrop-form input#crm-imagecrop-y1').val(c.y);
+      cj('form#crm-imagecrop-form input#crm-imagecrop-y2').val(c.y2);
+      cj('form#crm-imagecrop-form input#crm-imagecrop-w').val(c.w);
+      cj('form#crm-imagecrop-form input#crm-imagecrop-h').val(c.h);
+
+      // Update preview
       if (parseInt(c.w) > 0) {
         var rx = xsize / c.w;
         var ry = ysize / c.h;

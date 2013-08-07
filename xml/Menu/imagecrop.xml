@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/imagecrop</path>
+    <page_callback>CRM_ImageCrop_Page_AJAX::imageCrop</page_callback>
+    <title>ImageCrop</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

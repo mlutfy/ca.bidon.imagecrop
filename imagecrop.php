@@ -96,8 +96,24 @@ function imagecrop_civicrm_pageRun(&$page) {
     $imageURL = $smarty->_tpl_vars['imageURL'];
 
     if ($imageURL) {
+      // Assign the cropped image as the normal profile image
+      // We don't have a civi config for the "custom" directory URL, since image_URL stores the
+      // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
+      $cropDirectoryName = imagecrop_civicrm_get_directory();
+      $filename = basename($imageURL);
+      $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
+      if (file_exists($croppedfilename)) {
+        $cropped_imageURL = preg_replace("/$filename/", "imagecrop/$filename", $imageURL);
+        $smarty->assign('imageURL', $cropped_imageURL);
+      }
+
+      // Image to use for cropping
       $smarty->assign('imageCropImageURL', $imageURL);
       imagecrop_civicrm_jcrop_enable();
+
+      // Eventually, we will want to support different entities
+      $smarty->assign('imageCropEntityID', $smarty->_tpl_vars['id']);
+      $smarty->assign('imageCropEntityType', 'Contact');
     }
   }
 }
@@ -118,5 +134,19 @@ function imagecrop_civicrm_jcrop_enable() {
   CRM_Core_Region::instance('page-body')->add(array(
     'template' => 'CRM/ImageCrop/Ajax/popup.tpl',
   ));
+}
+
+/**
+ * Returns the path to where the cropped images are stored.
+ * (FIXME: no point in having one function per setting, fix later when we have more settings.)
+ */
+function imagecrop_civicrm_get_directory() {
+  $config = CRM_Core_Config::singleton();
+  $cropDirectoryName = $config->customFileUploadDir . DIRECTORY_SEPARATOR . 'imagecrop';
+
+  // Only creates the directory if it does not exist
+  CRM_Utils_File::createDir($cropDirectoryName);
+
+  return $cropDirectoryName;
 }
 
