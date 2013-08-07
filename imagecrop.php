@@ -2,6 +2,8 @@
 
 require_once 'imagecrop.civix.php';
 
+define('IMAGECROP_SETTINGS_GROUP', 'ImageCrop Extension');
+
 /**
  * Implementation of hook_civicrm_config
  */
@@ -134,6 +136,12 @@ function imagecrop_civicrm_jcrop_enable() {
   CRM_Core_Region::instance('page-body')->add(array(
     'template' => 'CRM/ImageCrop/Ajax/popup.tpl',
   ));
+
+  $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x');
+  $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y');
+
+  // Jcrop will set the aspect ratio of the crop area based on the size of the thumbnail preview, specified here
+  CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog-preview-pane .crm-imagecrop-dialog-preview-container { width: ' . $croparea_x . 'px; height: ' . $croparea_y . 'px; overflow: hidden; }');
 }
 
 /**

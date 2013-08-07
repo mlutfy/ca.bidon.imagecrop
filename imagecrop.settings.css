@@ -1,0 +1,10 @@
+/**
+ * CSS for the imagecrop settings form.
+ */
+
+/* small text inputs, mostly numbers */
+.crm-imagecrop-form-block input.form-text,
+.crm-imagecrop-form-block input.form-text {
+  width: 5em;
+}
+

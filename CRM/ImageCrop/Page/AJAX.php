@@ -17,9 +17,11 @@ class CRM_ImageCrop_Page_AJAX {
     $entity_id = CRM_Utils_Array::value('entity_id', $_POST);
     $image_URL = self::getContactField($entity_id, 'image_URL');
 
-    // from jCrop demo
+    // mostly from jCrop demo
+    $targ_w = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x');
+    $targ_h = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y');
+
     // TODO: add civicrm settings
-    $targ_w = $targ_h = 150;
     $jpeg_quality = 90;
 
     $img_r = imagecreatefromjpeg($image_URL);
