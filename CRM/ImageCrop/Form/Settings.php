@@ -83,7 +83,7 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
     if ($values['aspect_ratio']) {
       // Ex: 16:9, 1.78 or 1.78:1
       // http://en.wikipedia.org/wiki/Aspect_ratio_%28image%29
-      if (! preg_match('/^\d+\:\d+|\d+\.\d+(:\d+)?$/', $values['aspect_ratio'])) {
+      if (! preg_match('/^\d+\:\d+|\d+\.\d+(\:\d+)?$/', $values['aspect_ratio'])) {
         $this->_errors['aspect_ratio'] = ts('The aspect ratio is not a valid format.', array('domain' => 'ca.bidon.reporterror'));
       }
     }
