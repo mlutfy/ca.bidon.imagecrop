@@ -38,6 +38,8 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
     $this->applyFilter('__ALL__', 'trim');
 
+    $this->add('text', 'aspect_ratio', ts('Aspect ratio', array('domain' => 'ca.bidon.imagecrop')));
+
     $this->add('text', 'croparea_x', ts('Crop area X', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'croparea_y', ts('Crop area Y', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'output_x', ts('Output X', array('domain' => 'ca.bidon.imagecrop')));
@@ -61,13 +63,28 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
     parent::buildQuickForm();
   }
 
+  // Based on CRM/Core/Form.php validate()
+  // Not 100% this is the recommended way.
+  function validate() {
+    parent::validate();
+
+    $values = $this->exportValues();
+
+    if ($values['aspect_ratio']) {
+      if (! preg_match('/^(\d+\:\d+|\d+\.\d+(:\d+)?)$/', $values['aspect_ratio'])) {
+        $this->_errors['aspect_ratio'] = ts('The aspect ratio is not a valid format.', array('domain' => 'ca.bidon.reporterror'));
+      }
+    }
+
+    return (0 == count($this->_errors));
+  }
+
   function postProcess() {
     $values = $this->exportValues();
-    $fields = array('croparea_x', 'croparea_y', 'resize', 'output_x', 'output_y', 'min_width', 'min_height', 'max_width', 'max_height');
+    $fields = array('aspect_ratio', 'croparea_x', 'croparea_y', 'resize', 'output_x', 'output_y', 'min_width', 'min_height', 'max_width', 'max_height');
 
     foreach ($fields as $field) {
-      $value = intval($values[$field]);
-      $result = CRM_Core_BAO_Setting::setItem($value, IMAGECROP_SETTINGS_GROUP, $field);
+      $result = CRM_Core_BAO_Setting::setItem($values[$field], IMAGECROP_SETTINGS_GROUP, $field);
     }
 
     // we will return to this form by default
