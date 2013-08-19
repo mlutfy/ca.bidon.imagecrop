@@ -7,27 +7,16 @@
   float: right;
 }
 
-.crm-imagecrop-buttons {
-  float: right;
-}
-
-.crm-imagecrop-close {
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
-}
-
-
 /* From: https://github.com/tapmodo/Jcrop/blob/master/demos/tutorial3.html */
 /* Apply these styles only when #preview-pane has been placed within the Jcrop widget */
 .jcrop-holder .crm-imagecrop-dialog-preview-pane {
   display: block;
   position: absolute;
   z-index: 2000;
-  top: 10px;
+  top: 0;
   right: -280px;
   padding: 6px;
-  border: 1px rgba(0,0,0,.4) solid;
+  border: 1px rgba(0, 0, 0, 0.4) solid;
   background-color: white;
 
   -webkit-border-radius: 6px;
@@ -37,5 +26,19 @@
   -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* the "crop" button */
+.crm-imagecrop-dialog .crm-imagecrop-buttons {
+  position: absolute;
+  right: 170px;
+  padding-top: 2.5em;
+  /* These are set in imagecrop.php. We try to make it adaptable to various preview/crop-area dimensions. */
+  /* top: $croparea_y px; */
+  /* width: $croparea_x px; */
+}
+
+.crm-imagecrop-close {
+  padding-left: 1em;
 }
 

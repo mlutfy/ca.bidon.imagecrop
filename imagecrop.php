@@ -140,8 +140,9 @@ function imagecrop_civicrm_jcrop_enable() {
   $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
   $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
 
-  // Jcrop will set the aspect ratio of the crop area based on the size of the thumbnail preview, specified here
+  // Jcrop will set the aspect ratio of the crop area based on the size of the crop-area preview, specified here
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog-preview-pane .crm-imagecrop-dialog-preview-container { width: ' . $croparea_x . 'px; height: ' . $croparea_y . 'px; overflow: hidden; }');
+  CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog .crm-imagecrop-buttons { top: ' . $croparea_y . 'px; width: ' . $croparea_x . 'px; }');
 }
 
 /**
