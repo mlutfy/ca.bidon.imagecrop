@@ -45,6 +45,8 @@ function imagecrop_civicrm_enable(selector) {
           boxHeight: 480,
           aspectRatio: xsize / ysize,
           minSize: [ CRM.imagecrop.croparea_x, CRM.imagecrop.croparea_y ],
+          // TODO: if we had saved the cropped area in the DB, we could setSelect that area automatically
+          // setSelect: [ 0, 0, 640, 480 ],
           onChange: crmImageCropUpdatePreview,
           onSelect: crmImageCropUpdatePreview
         }, function(){

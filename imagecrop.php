@@ -145,7 +145,7 @@ function imagecrop_civicrm_jcrop_enable() {
 
   // Expose settings to JS
   CRM_Core_Resources::singleton()->addSetting(array(
-    'ca.bidon.imagecrop' => array(
+    'imagecrop' => array(
       'croparea_x' => $croparea_x,
       'croparea_y' => $croparea_y,
       'resize' => $resize,

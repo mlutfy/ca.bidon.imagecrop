@@ -17,13 +17,20 @@ class CRM_ImageCrop_Page_AJAX {
     $entity_id = CRM_Utils_Array::value('entity_id', $_POST);
     $image_URL = self::getContactField($entity_id, 'image_URL');
 
-    // mostly from jCrop demo
-    $targ_w = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
-    $targ_h = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
+    // The output will default to the selected area in the original size
+    // unless the site admin has configured to resize to a specific size.
+    $targ_w = $_POST['w'];
+    $targ_h = $_POST['h'];
+
+    if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'resize', NULL, FALSE)) {
+      $targ_w = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'output_x', NULL, $targ_w);
+      $targ_h = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'output_y', NULL, $targ_h);
+    }
 
     // TODO: add civicrm settings
     $jpeg_quality = 90;
 
+    // mostly from jCrop demo
     $img_r = imagecreatefromjpeg($image_URL);
     $dst_r = imagecreatetruecolor($targ_w, $targ_h);
 

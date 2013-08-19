@@ -34,11 +34,15 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
   function buildQuickForm() {
     CRM_Core_Resources::singleton()->addStyleFile('ca.bidon.imagecrop', 'imagecrop.settings.css');
+    CRM_Core_Resources::singleton()->addScriptFile('ca.bidon.imagecrop', 'imagecrop.settings.js');
 
     $this->applyFilter('__ALL__', 'trim');
 
     $this->add('text', 'croparea_x', ts('Crop area X', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'croparea_y', ts('Crop area Y', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'output_x', ts('Output X', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'output_y', ts('Output Y', array('domain' => 'ca.bidon.imagecrop')));
+
     $this->add('text', 'min_width', ts('Minimum width', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'min_height', ts('Minimum height', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'max_width', ts('Maximum width', array('domain' => 'ca.bidon.imagecrop')));
@@ -59,7 +63,7 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
   function postProcess() {
     $values = $this->exportValues();
-    $fields = array('croparea_x', 'croparea_y', 'resize', 'min_width', 'min_height', 'max_width', 'max_height');
+    $fields = array('croparea_x', 'croparea_y', 'resize', 'output_x', 'output_y', 'min_width', 'min_height', 'max_width', 'max_height');
 
     foreach ($fields as $field) {
       $value = intval($values[$field]);
@@ -72,3 +76,4 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
     parent::postProcess();
   }
 }
+
