@@ -89,6 +89,14 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
       }
     }
 
+    if ($values['croparea_x'] <= 0) {
+      $this->_errors['croparea_x'] = ts('The crop area must be greater than zero.', array('domain' => 'ca.bidon.reporterror'));
+    }
+
+    if ($values['croparea_y'] <= 0) {
+      $this->_errors['croparea_y'] = ts('The crop area must be greater than zero.', array('domain' => 'ca.bidon.reporterror'));
+    }
+
     return (0 == count($this->_errors));
   }
 
