@@ -45,10 +45,20 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
     $this->add('text', 'output_x', ts('Output X', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'output_y', ts('Output Y', array('domain' => 'ca.bidon.imagecrop')));
 
+    $this->addRule('croparea_x', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('croparea_y', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('output_x', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('output_y', ts('Value should be a positive number'), 'positiveInteger');
+
     $this->add('text', 'min_width', ts('Minimum width', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'min_height', ts('Minimum height', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'max_width', ts('Maximum width', array('domain' => 'ca.bidon.imagecrop')));
     $this->add('text', 'max_height', ts('Maximum height', array('domain' => 'ca.bidon.imagecrop')));
+
+    $this->addRule('min_width', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('min_height', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('max_width', ts('Value should be a positive number'), 'positiveInteger');
+    $this->addRule('max_height', ts('Value should be a positive number'), 'positiveInteger');
 
     $this->addYesNo('resize', ts('Automatically resize?', array('domain' => 'ca.bidon.imagecrop')));
 
