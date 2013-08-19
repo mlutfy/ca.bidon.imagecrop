@@ -11,7 +11,7 @@
   <tr>
     <td class="label">{ts domain='ca.bidon.imagecrop'}Minimum crop area{/ts}</td>
     <td>{$form.croparea_x.html} x {$form.croparea_y.html} {ts domain='ca.bidon.imagecrop'}pixels (width x height){/ts}
-      <div class="description">{ts domain='ca.bidon.imagecrop'}Minimum size of the cropped area. It will also be used for the aspect ratio of the selection.{/ts}</div>
+      <div class="description">{ts domain='ca.bidon.imagecrop'}Minimum size of the cropped area. If set, it will be used for the aspect ratio of the selection.{/ts}</div>
     </td>
   </tr>
   <tr class="crm-imagecrop-resize-question-row">
