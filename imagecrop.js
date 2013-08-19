@@ -7,21 +7,25 @@ cj(function($) {
  * Enables Jcrop on an image field.
  */
 function imagecrop_civicrm_enable(selector) {
+  if (cj(selector).size() <= 0) {
+    return;
+  }
+
   // Take the 'img' out of its parent 'a', to disable the default popup function of civicrm
   // FIXME: this should still be in a 'a', for sanity.
   cj('.crm-contact_image a img').appendTo('.crm-contact_image');
 
   // c.f. https://github.com/tapmodo/Jcrop/blob/master/demos/tutorial3.html
   // Create variables (in this scope) to hold the API and image size
-  var jcrop_api, boundx, boundy,
+  var jcrop_api, boundx, boundy;
 
   // Grab some information about the preview pane
-  $preview = cj('.crm-imagecrop-dialog-preview-pane'),
-  $pcnt = cj('.crm-imagecrop-dialog-preview-container'),
-  $pimg = cj('.crm-imagecrop-dialog-preview-container img'),
+  var $preview = cj('.crm-imagecrop-dialog-preview-pane');
+  var $pcnt = cj('.crm-imagecrop-dialog-preview-container');
+  var $pimg = cj('.crm-imagecrop-dialog-preview-container img');
 
-  xsize = $pcnt.width(),
-  ysize = $pcnt.height();
+  var xsize = $pcnt.width();
+  var ysize = $pcnt.height();
 
   // Popup image cropping feature when we click on the contact image.
   // The HTML for the popup itself was added by imagecrop.php in the page footer area.
@@ -29,7 +33,7 @@ function imagecrop_civicrm_enable(selector) {
     var this_img = cj(this);
 
     cj('.crm-imagecrop-dialog').dialog({
-      title: ts("Image editor", {domain: "imagecrop"}),
+      title: ts("Image editor", {domain: "ca.bidon.imagecrop"}),
       width: 1000,
       height: 550,
       modal: true,

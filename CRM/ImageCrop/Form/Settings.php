@@ -33,8 +33,9 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
   }
 
   function buildQuickForm() {
-    CRM_Core_Resources::singleton()->addStyleFile('ca.bidon.imagecrop', 'imagecrop.settings.css');
-    CRM_Core_Resources::singleton()->addScriptFile('ca.bidon.imagecrop', 'imagecrop.settings.js');
+    CRM_Core_Resources::singleton()
+      ->addStyleFile('ca.bidon.imagecrop', 'imagecrop.settings.css')
+      ->addScriptFile('ca.bidon.imagecrop', 'imagecrop.settings.js');
 
     $this->applyFilter('__ALL__', 'trim');
 

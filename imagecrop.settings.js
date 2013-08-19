@@ -30,10 +30,10 @@ cj(function($) {
   });
 
   /**
-   * Apply the aspect ratio to other relevant seetings.
+   * Get a numeric value for the aspect ratio.
    */
   function civicrm_imagecrop_parse_aspect_ratio() {
-    var ratio = $('input#aspect_ratio').val();
+    var ratio = cj('input#aspect_ratio').val();
     var x = 0;
     var y = 0;
 
