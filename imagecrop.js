@@ -29,7 +29,7 @@ function imagecrop_civicrm_enable(selector) {
     var this_img = cj(this);
 
     cj('.crm-imagecrop-dialog').dialog({
-      title: ts("Image editor", {domain: "ca.bidon.imagecrop"}),
+      title: ts("Image editor", {domain: "imagecrop"}),
       width: 1000,
       height: 550,
       modal: true,
@@ -44,6 +44,7 @@ function imagecrop_civicrm_enable(selector) {
           boxWidth: 640,
           boxHeight: 480,
           aspectRatio: xsize / ysize,
+          minSize: [ CRM.imagecrop.croparea_x, CRM.imagecrop.croparea_y ],
           onChange: crmImageCropUpdatePreview,
           onSelect: crmImageCropUpdatePreview
         }, function(){

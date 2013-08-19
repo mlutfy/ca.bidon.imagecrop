@@ -25,6 +25,10 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
       $defaults['croparea_y'] = 200;
     }
 
+    if (! CRM_Utils_Array::value('resize', $defaults)) {
+      $defaults['resize'] = FALSE;
+    }
+
     return $defaults;
   }
 
@@ -33,13 +37,14 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
     $this->applyFilter('__ALL__', 'trim');
 
-    // TODO: ts domain='ca.bidon.imagecrop'
-    $this->add('text', 'croparea_x', ts('Crop area X'));
-    $this->add('text', 'croparea_y', ts('Crop area Y'));
-    $this->add('text', 'min_width', ts('Minimum width'));
-    $this->add('text', 'min_height', ts('Minimum height'));
-    $this->add('text', 'max_width', ts('Maximum width'));
-    $this->add('text', 'max_height', ts('Maximum height'));
+    $this->add('text', 'croparea_x', ts('Crop area X', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'croparea_y', ts('Crop area Y', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'min_width', ts('Minimum width', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'min_height', ts('Minimum height', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'max_width', ts('Maximum width', array('domain' => 'ca.bidon.imagecrop')));
+    $this->add('text', 'max_height', ts('Maximum height', array('domain' => 'ca.bidon.imagecrop')));
+
+    $this->addYesNo('resize', ts('Automatically resize?', array('domain' => 'ca.bidon.imagecrop')));
 
     $this->addButtons(array(
       array(
@@ -54,7 +59,7 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
   function postProcess() {
     $values = $this->exportValues();
-    $fields = array('croparea_x', 'croparea_y', 'min_width', 'min_height', 'max_width', 'max_height');
+    $fields = array('croparea_x', 'croparea_y', 'resize', 'min_width', 'min_height', 'max_width', 'max_height');
 
     foreach ($fields as $field) {
       $value = intval($values[$field]);
