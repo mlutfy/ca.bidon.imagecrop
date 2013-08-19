@@ -30,11 +30,10 @@ function imagecrop_civicrm_enable(selector) {
             if (response.success) {
               cj('.crm-imagecrop-dialog').dialog('close');
 
-              // http://stackoverflow.com/questions/3715047/how-to-reload-a-page-using-javascript
-              // If we needed to pull the document from
-              // the web-server again (such as where the document contents
-              // change dynamically) we would pass the argument as 'true'.
-              window.location.reload(true);
+              // Update the image that was cropped.
+              this_img.hide();
+              this_img.attr('src', response.filename);
+              this_img.fadeIn();
             }
           }
         });

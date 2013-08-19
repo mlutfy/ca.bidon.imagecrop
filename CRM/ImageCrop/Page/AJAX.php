@@ -33,6 +33,21 @@ class CRM_ImageCrop_Page_AJAX {
     $filename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($image_URL);
     imagejpeg($dst_r, $filename , $jpeg_quality);
 
+    // Return the URL of the image.
+    // We can only guess it's either the existing image_URL with imagecache appended in the path.
+    $t = $image_URL;
+
+    // If the URL does not have "imagecrop/" in it already, add it.
+    if (! preg_match('/\/imagecrop\//', $t)) {
+      $b = basename($image_URL);
+      $t = preg_replace('/' . $b . '/', 'imagecrop/' . $b, $t);
+    }
+
+    // Add a random bit after the URL to force the browser to reload
+    $t .= '?t=' . time();
+
+    $response['filename'] = $t;
+
     echo json_encode($response);
     CRM_Utils_System::civiExit();
   }
