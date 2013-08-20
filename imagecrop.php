@@ -152,6 +152,16 @@ function imagecrop_civicrm_pageRun(&$page) {
  * @param selector_link_location : jquery selector to place/append the link "crop image" that triggers the popup.
  */
 function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $selector_image, $selector_link_location) {
+  // Check if the user has permission to edit the entity
+  if ($entity_type == 'Contact') {
+    if (! CRM_Contact_BAO_Contact_Permission::allow($entity_id, CRM_Core_Permission::EDIT)) {
+      return;
+    }
+  }
+  else {
+    throw new Exception($entity_type . ': unsupported entity_type for imagecrop');
+  }
+
   CRM_Core_Resources::singleton()
     ->addScriptFile('ca.bidon.imagecrop', 'imagecrop.js')
     ->addStyleFile('ca.bidon.imagecrop', 'imagecrop.css');
