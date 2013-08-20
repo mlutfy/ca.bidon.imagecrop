@@ -14,10 +14,15 @@ function imagecrop_civicrm_enable() {
     return;
   }
 
-  cj(selector_link_location).append('<div class="crm-imagecrop-croplink"><a class="action-item action-item-first" href="#" onclick="imagecrop_civicrm_crop_image(\'' + selector_image + '\'); return false;">' + ts('Crop image', {domain: 'ca.bidon.imagecrop'}) + '</a></div>');
+  var w = CRM.imagecrop.image_width;
+  var h = CRM.imagecrop.image_height;
+
+  // The excess CSS classes are mostly to there to display the links similarly to the "delete" link of civicrm
+  cj(selector_link_location).append('<div class="crm-imagecrop-imagesize action-item action-item-first">' + w + 'x' + h + '</div>');
+  cj(selector_link_location).append('<div class="crm-imagecrop-croplink"><a class="action-item action-item-first" href="#" onclick="imagecrop_civicrm_crop_image(\'' + selector_image + '\', \'' + selector_link_location + '\'); return false;">' + ts('Crop image', {domain: 'ca.bidon.imagecrop'}) + '</a></div>');
 }
 
-function imagecrop_civicrm_crop_image(selector) {
+function imagecrop_civicrm_crop_image(selector_image, selector_link_location) {
   // c.f. https://github.com/tapmodo/Jcrop/blob/master/demos/tutorial3.html
   // Create variables (in this scope) to hold the API and image size
   var jcrop_api, boundx, boundy;
@@ -33,7 +38,7 @@ function imagecrop_civicrm_crop_image(selector) {
   // Popup image cropping feature when we click on the contact image.
   // The HTML for the popup itself was added by imagecrop.php in the page footer area.
   // cj('.crm-contact_image img').click(function() {
-    var this_img = cj(selector);
+    var this_img = cj(selector_image);
 
     cj('.crm-imagecrop-dialog').dialog({
       title: ts("Image editor", {domain: "ca.bidon.imagecrop"}),
@@ -88,6 +93,9 @@ function imagecrop_civicrm_crop_image(selector) {
               this_img.hide();
               this_img.attr('src', response.filename);
               this_img.fadeIn();
+
+              // Update the size of the image
+              cj(selector_link_location + ' .crm-imagecrop-imagesize').html(response.width + 'x' + response.height);
             }
           }
         });

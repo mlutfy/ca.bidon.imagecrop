@@ -184,6 +184,10 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
   $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
   $resize = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'resize', NULL, FALSE);
 
+  // If the image has not been cropped yet, it will show the original size
+  $image_file = imagecrop_civicrm_get_cropped_image_path($imageURL);
+  list($imageWidth, $imageHeight) = getimagesize($image_file);
+
   // Jcrop will set the aspect ratio of the crop area based on the size of the crop-area preview, specified here
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog-preview-pane .crm-imagecrop-dialog-preview-container { width: ' . $croparea_x . 'px; height: ' . $croparea_y . 'px; overflow: hidden; }');
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog .crm-imagecrop-buttons { top: ' . $croparea_y . 'px; }');
@@ -196,6 +200,8 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
       'resize' => $resize,
       'selector_image' => $selector_image,
       'selector_link_location' => $selector_link_location,
+      'image_width' => $imageWidth,
+      'image_height' => $imageHeight,
     ),
   ));
 }
@@ -229,6 +235,24 @@ function imagecrop_civicrm_get_cropped_image_url($imageURL) {
   }
 
   return $imageURL;
+}
+
+/**
+ * Returns the file path for a cropped image, if it exists. If not, returns the path to the original image.
+ */
+function imagecrop_civicrm_get_cropped_image_path($imageURL) {
+  // We don't have a civi config for the "custom" directory URL, since image_URL stores the
+  // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
+  $cropDirectoryName = imagecrop_civicrm_get_directory();
+  $filename = basename($imageURL);
+  $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
+  if (file_exists($croppedfilename)) {
+    return $croppedfilename;
+  }
+
+  // return the path to the original image
+  $config = CRM_Core_Config::singleton();
+  return $config->customFileUploadDir . DIRECTORY_SEPARATOR . $filename;
 }
 
 /**

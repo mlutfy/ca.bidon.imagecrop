@@ -11,6 +11,8 @@ class CRM_ImageCrop_Page_AJAX {
   static function imageCrop() {
     $response = array(
       'success' => 0,
+      'width' => 0,
+      'height' => 0,
     );
 
     // TODO: support other types of entities
@@ -42,6 +44,9 @@ class CRM_ImageCrop_Page_AJAX {
       $targ_w = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'output_x', NULL, $targ_w);
       $targ_h = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'output_y', NULL, $targ_h);
     }
+
+    $response['width'] = $targ_w;
+    $response['height'] = $targ_h;
 
     // TODO: add civicrm settings
     $jpeg_quality = 90;
