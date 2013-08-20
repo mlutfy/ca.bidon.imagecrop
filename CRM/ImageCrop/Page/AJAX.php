@@ -10,11 +10,27 @@ class CRM_ImageCrop_Page_AJAX {
    */
   static function imageCrop() {
     $response = array(
-      'success' => 1,
+      'success' => 0,
     );
 
     // TODO: support other types of entities
+    $entity_type = CRM_Utils_Array::value('entity_type', $_POST);
     $entity_id = CRM_Utils_Array::value('entity_id', $_POST);
+
+    if ($entity_type == 'Contact') {
+      if (! CRM_Contact_BAO_Contact_Permission::allow($entity_id, CRM_Core_Permission::EDIT)) {
+        $response['error'] = 'Permission denied.';
+      }
+    }
+    else {
+      $response['error'] = $entity_type . ': unsupported entity_type for imagecrop';
+    }
+
+    if (! empty($response['error'])) {
+      echo json_encode($response);
+      CRM_Utils_System::civiExit();
+    }
+
     $image_URL = self::getContactField($entity_id, 'image_URL');
 
     // The output will default to the selected area in the original size
@@ -54,6 +70,7 @@ class CRM_ImageCrop_Page_AJAX {
     $t .= '?t=' . time();
 
     $response['filename'] = $t;
+    $response['success'] = 1;
 
     echo json_encode($response);
     CRM_Utils_System::civiExit();

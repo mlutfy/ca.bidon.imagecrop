@@ -4,6 +4,7 @@
   </div>
   <form method="post" id="crm-imagecrop-form">
     <input type="hidden" name="entity_id" value="{$imageCropEntityID}" />
+    <input type="hidden" name="entity_type" value="{$imageCropEntityType}" />
     <input type="hidden" name="x1" id="crm-imagecrop-x1" />
     <input type="hidden" name="x2" id="crm-imagecrop-x2" />
     <input type="hidden" name="y1" id="crm-imagecrop-y1" />
