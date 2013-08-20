@@ -167,3 +167,51 @@ function imagecrop_civicrm_get_directory() {
   return $cropDirectoryName;
 }
 
+/**
+ * Implementation of hook_civicrm_validateForm().
+ *
+ * Validate the size of the image files.
+ */
+function imagecrop_civicrm_validateForm($formName, &$fields, &$files, &$form, &$errors) {
+  // Taken from civicrm/CRM/Contact/BAO/Contact.php
+  $mimeType = array(
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/bmp',
+    'image/p-jpeg',
+    'image/gif',
+    'image/x-png',
+  );
+
+  $minWidth = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'min_width');
+  $minHeight = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'min_height');
+  $maxWidth = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'max_width');
+  $maxHeight = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'max_height');
+
+  if ($formName == 'CRM_Profile_Form_Edit' || $formName == 'CRM_Contact_Form_Contact') {
+    foreach ($files as $key => $val) {
+      if (in_array($val['type'], $mimeType)) {
+        list($width, $height, $type, $attr) = getimagesize($val['tmp_name']);
+
+        // It may be annoying to check only width, then complain about height
+        // Hopefully, most people upload images with a reasonable aspect ratio?
+        // I don't feel like forcing admins to enter both a min height/width
+        if ($minWidth && $width < $minWidth) {
+          $errors[$key] = ts('The image size is too small (%1 px). Please upload an image at least %2 pixels large.', array(1 => $width, 2 => $minWidth, 'domain' => 'ca.bidon.imagecrop'));
+        }
+        elseif ($minHeight && $height < $minHeight) {
+          $errors[$key] = ts('The image size is too small (%1 px). Please upload an image at least %2 pixels high.', array(1 => $height, 2 => $minHeight, 'domain' => 'ca.bidon.imagecrop'));
+        }
+
+        if ($maxWidth && $width > $maxWidth) {
+          $errors[$key] = ts('The image size is too large (%1 px). Please upload an image less than %2 pixels large.', array(1 => $width, 2 => $maxWidth, 'domain' => 'ca.bidon.imagecrop'));
+        }
+        elseif ($maxHeight && $height > $maxHeight) {
+          $errors[$key] = ts('The image size is too large (%1 px). Please upload an image less than %2 pixels high.', array(1 => $height, 2 => $maxHeight, 'domain' => 'ca.bidon.imagecrop'));
+        }
+      }
+    }
+  }
+}
+
