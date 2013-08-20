@@ -123,10 +123,10 @@ function imagecrop_civicrm_pageRun(&$page) {
   elseif ($class_name == 'CRM_Profile_Page_View') {
     // XXX hackish override of profile output. We don't have much to work with.
     $smarty = CRM_Core_Smarty::singleton();
-    $row = $smarty->_tpl_vars['row'];
+    $groups = $smarty->_tpl_vars['profileGroups'];
 
-    foreach ($row as $key => $val) {
-      if (preg_match('/contactImagePopUp.*img src="([^"]+)"/', $val, $matches)) {
+    foreach ($groups as $key => $val) {
+      if (preg_match('/contactImagePopUp.*img src="([^"]+)"/', $val['content'], $matches)) {
         $imageURL = $matches[1];
 
         $entity_id = $smarty->_tpl_vars['cid'];
@@ -135,11 +135,8 @@ function imagecrop_civicrm_pageRun(&$page) {
         // Assign the cropped image as the normal profile image
         $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
 
-        $row[$key] = preg_replace('|' . $imageURL . '|', $cropped_imageURL, $val);
-        $smarty->assign('row', $row);
-
-        // assume we can only have one profile contact image per profile
-        break;
+        $groups[$key]['content'] = preg_replace('|src="' . $imageURL . '"|', 'src="' . $cropped_imageURL . '"', $val['content']);
+        $smarty->assign('profileGroups', $groups);
       }
     }
   }
