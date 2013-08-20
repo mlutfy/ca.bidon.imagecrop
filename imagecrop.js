@@ -51,6 +51,9 @@ function imagecrop_civicrm_crop_image(selector) {
           boxWidth: 640,
           boxHeight: 480,
           aspectRatio: xsize / ysize,
+          // https://github.com/tapmodo/Jcrop/issues/36
+          // in Chrome/webkit, on contact->edit, selecting an area to crop causes a weird scroll glitch.
+          keySupport: false,
           minSize: [ CRM.imagecrop.croparea_x, CRM.imagecrop.croparea_y ],
           // TODO: if we had saved the cropped area in the DB, we could setSelect that area automatically
           // setSelect: [ 0, 0, 640, 480 ],
