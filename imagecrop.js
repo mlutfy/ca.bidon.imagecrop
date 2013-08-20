@@ -6,7 +6,7 @@ cj(function($) {
 /**
  * Enables Jcrop on an image field.
  */
-function imagecrop_civicrm_enable(selector_image, selector_link_location) {
+function imagecrop_civicrm_enable() {
   var selector_image = CRM.imagecrop.selector_image;
   var selector_link_location = CRM.imagecrop.selector_link_location;
 

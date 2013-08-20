@@ -93,8 +93,6 @@ function imagecrop_civicrm_buildForm($formName, &$form) {
     imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
 
     // Assign the cropped image as the normal profile image
-    // We don't have a civi config for the "custom" directory URL, since image_URL stores the
-    // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
     $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
     $smarty->assign('imageURL', $cropped_imageURL);
   }
@@ -118,10 +116,31 @@ function imagecrop_civicrm_pageRun(&$page) {
       imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
 
       // Assign the cropped image as the normal profile image
-      // We don't have a civi config for the "custom" directory URL, since image_URL stores the
-      // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
       $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
       $smarty->assign('imageURL', $cropped_imageURL);
+    }
+  }
+  elseif ($class_name == 'CRM_Profile_Page_View') {
+    // XXX hackish override of profile output. We don't have much to work with.
+    $smarty = CRM_Core_Smarty::singleton();
+    $row = $smarty->_tpl_vars['row'];
+
+    foreach ($row as $key => $val) {
+      if (preg_match('/contactImagePopUp.*img src="([^"]+)"/', $val, $matches)) {
+        $imageURL = $matches[1];
+
+        $entity_id = $smarty->_tpl_vars['cid'];
+        imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '#row-image_URL .content a img', '#row-image_URL .content');
+
+        // Assign the cropped image as the normal profile image
+        $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+
+        $row[$key] = preg_replace('|' . $imageURL . '|', $cropped_imageURL, $val);
+        $smarty->assign('row', $row);
+
+        // assume we can only have one profile contact image per profile
+        break;
+      }
     }
   }
 }
@@ -192,6 +211,8 @@ function imagecrop_civicrm_get_directory() {
  * Returns the URL for a cropped image, if it exists. If not, returns the same URL.
  */
 function imagecrop_civicrm_get_cropped_image_url($imageURL) {
+  // We don't have a civi config for the "custom" directory URL, since image_URL stores the
+  // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
   $cropDirectoryName = imagecrop_civicrm_get_directory();
   $filename = basename($imageURL);
   $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
