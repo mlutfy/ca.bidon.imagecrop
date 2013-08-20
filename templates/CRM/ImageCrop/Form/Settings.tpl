@@ -9,9 +9,9 @@
     </td>
   </tr>
   <tr>
-    <td class="label">{ts domain='ca.bidon.imagecrop'}Minimum crop area{/ts}</td>
+    <td class="label">{ts domain='ca.bidon.imagecrop'}Thumbnail size{/ts}</td>
     <td>{$form.croparea_x.html} x {$form.croparea_y.html} {ts domain='ca.bidon.imagecrop'}pixels (width x height){/ts}
-      <div class="description">{ts domain='ca.bidon.imagecrop'}Minimum size of the cropped area. It will be used for the aspect ratio of the selection. This also determines the size of the preview image.{/ts}</div>
+      <div class="description">{ts domain='ca.bidon.imagecrop'}Size of the thumbnail images that you are most likely to use. This is also the minimum size of the cropped area that the user must select.{/ts}</div>
     </td>
   </tr>
   <tr class="crm-imagecrop-resize-question-row">
@@ -22,7 +22,9 @@
   </tr>
   <tr class="crm-imagecrop-resize-output-row">
     <td class="label">{ts domain='ca.bidon.imagecrop'}Output image size{/ts}</td>
-    <td>{$form.output_x.html} x {$form.output_y.html} {ts domain='ca.bidon.imagecrop'}pixels (width x height){/ts}</td>
+    <td>{$form.output_x.html} x {$form.output_y.html} {ts domain='ca.bidon.imagecrop'}pixels (width x height){/ts}
+      <div class="description">{ts domain='ca.bidon.imagecrop'}This should be set to the same size as the thumbnail size above, unless you use multiple thumbnail sizes and prefer to resize by other means (ex: CSS).{/ts}</div>
+    </td>
   </tr>
   </table>
 

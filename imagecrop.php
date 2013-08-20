@@ -189,7 +189,7 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
 
   // Jcrop will set the aspect ratio of the crop area based on the size of the crop-area preview, specified here
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog-preview-pane .crm-imagecrop-dialog-preview-container { width: ' . $croparea_x . 'px; height: ' . $croparea_y . 'px; overflow: hidden; }');
-  CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog .crm-imagecrop-buttons { top: ' . $croparea_y . 'px; width: ' . $croparea_x . 'px; }');
+  CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog .crm-imagecrop-buttons { top: ' . $croparea_y . 'px; }');
 
   // Expose settings to JS
   CRM_Core_Resources::singleton()->addSetting(array(
