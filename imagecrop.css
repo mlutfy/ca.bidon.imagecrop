@@ -43,3 +43,8 @@
   padding-left: 1em;
 }
 
+/* CiviCRM includes a .css file from jquery/plugins/DataTables that adds a padding on .bottom */
+.jcrop-hline.bottom {
+  padding: 0;
+}
+
