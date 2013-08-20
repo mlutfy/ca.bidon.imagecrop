@@ -14,6 +14,12 @@
       <div class="description">{ts domain='ca.bidon.imagecrop'}Size of the thumbnail images that you are most likely to use. This is also the minimum size of the cropped area that the user must select.{/ts}</div>
     </td>
   </tr>
+  <tr class="crm-imagecrop-change-thumbnail-size-row">
+    <td class="label">{$form.change_thumbnail_size.label}</td>
+    <td>{$form.change_thumbnail_size.html}
+      <div class="description">{ts domain='ca.bidon.imagecrop'}By default CiviCRM shows thumbnails of 100 pixels wide in contact records and profile view. Setting this to "yes" will set the thumbnail to the above dimensions. This may break the layout of your screen if the size is too large.{/ts}</div>
+    </td>
+  </tr>
   <tr class="crm-imagecrop-resize-question-row">
     <td class="label">{$form.resize.label}</td>
     <td>{$form.resize.html}

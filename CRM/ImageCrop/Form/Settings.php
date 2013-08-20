@@ -29,6 +29,10 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
       $defaults['resize'] = FALSE;
     }
 
+    if (! CRM_Utils_Array::value('change_thumbnail_size', $defaults)) {
+      $defaults['change_thumbnail_size'] = FALSE;
+    }
+
     return $defaults;
   }
 
@@ -61,6 +65,7 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
     $this->addRule('max_width', ts('Value should be a positive number'), 'positiveInteger');
     $this->addRule('max_height', ts('Value should be a positive number'), 'positiveInteger');
 
+    $this->addYesNo('change_thumbnail_size', ts('Change thumbnail size of contact records?', array('domain' => 'ca.bidon.imagecrop')));
     $this->addYesNo('resize', ts('Automatically resize?', array('domain' => 'ca.bidon.imagecrop')));
 
     $this->addButtons(array(
@@ -102,7 +107,7 @@ class CRM_ImageCrop_Form_Settings extends CRM_Core_Form {
 
   function postProcess() {
     $values = $this->exportValues();
-    $fields = array('aspect_ratio', 'croparea_x', 'croparea_y', 'resize', 'output_x', 'output_y', 'min_width', 'min_height', 'max_width', 'max_height');
+    $fields = array('aspect_ratio', 'croparea_x', 'croparea_y', 'change_thumbnail_size', 'resize', 'output_x', 'output_y', 'min_width', 'min_height', 'max_width', 'max_height');
 
     foreach ($fields as $field) {
       $result = CRM_Core_BAO_Setting::setItem($values[$field], IMAGECROP_SETTINGS_GROUP, $field);

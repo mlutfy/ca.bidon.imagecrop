@@ -95,11 +95,18 @@ function imagecrop_civicrm_buildForm($formName, &$form) {
     // Assign the cropped image as the normal profile image
     $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
     $smarty->assign('imageURL', $cropped_imageURL);
+
+    if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
+      $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
+      $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
+      $smarty->assign('imageThumbWidth', $croparea_x);
+      $smarty->assign('imageThumbHeight', $croparea_y);
+    }
   }
 }
 
 /**
- * Implements hook_civicrm_buildForm().
+ * Implements hook_civicrm_pageRun().
  *
  * Add jCrop on selected forms.
  */
@@ -118,6 +125,13 @@ function imagecrop_civicrm_pageRun(&$page) {
       // Assign the cropped image as the normal profile image
       $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
       $smarty->assign('imageURL', $cropped_imageURL);
+
+      if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
+        $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
+        $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
+        $smarty->assign('imageThumbWidth', $croparea_x);
+        $smarty->assign('imageThumbHeight', $croparea_y);
+      }
     }
   }
   elseif ($class_name == 'CRM_Profile_Page_View') {
@@ -136,6 +150,15 @@ function imagecrop_civicrm_pageRun(&$page) {
         $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
 
         $groups[$key]['content'] = preg_replace('|src="' . $imageURL . '"|', 'src="' . $cropped_imageURL . '"', $val['content']);
+
+        if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
+          $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
+          $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
+          // profile code is sloppy and has invalid html, i.e. has spaces instead of quotes..
+          $groups[$key]['content'] = preg_replace('|width=["\'\s]\d+["\'\s]|', 'width="' . $croparea_x . '" ', $groups[$key]['content']);
+          $groups[$key]['content'] = preg_replace('|height=["\'\s]\d+["\'\s]|', 'height="' . $croparea_y . '" ', $groups[$key]['content']);
+        }
+
         $smarty->assign('profileGroups', $groups);
       }
     }
