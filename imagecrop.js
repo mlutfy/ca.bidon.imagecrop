@@ -1,20 +1,23 @@
 
 cj(function($) {
-  imagecrop_civicrm_enable('.crm-contact_image');
+  imagecrop_civicrm_enable();
 });
 
 /**
  * Enables Jcrop on an image field.
  */
-function imagecrop_civicrm_enable(selector) {
-  if (cj(selector).size() <= 0) {
+function imagecrop_civicrm_enable(selector_image, selector_link_location) {
+  var selector_image = CRM.imagecrop.selector_image;
+  var selector_link_location = CRM.imagecrop.selector_link_location;
+
+  if (cj(selector_image).size() <= 0) {
     return;
   }
 
-  // Take the 'img' out of its parent 'a', to disable the default popup function of civicrm
-  // FIXME: this should still be in a 'a', for sanity.
-  cj('.crm-contact_image a img').appendTo('.crm-contact_image');
+  cj(selector_link_location).append('<div class="crm-imagecrop-croplink"><a class="action-item action-item-first" href="#" onclick="imagecrop_civicrm_crop_image(\'' + selector_image + '\'); return false;">' + ts('Crop image', {domain: 'ca.bidon.imagecrop'}) + '</a></div>');
+}
 
+function imagecrop_civicrm_crop_image(selector) {
   // c.f. https://github.com/tapmodo/Jcrop/blob/master/demos/tutorial3.html
   // Create variables (in this scope) to hold the API and image size
   var jcrop_api, boundx, boundy;
@@ -29,8 +32,8 @@ function imagecrop_civicrm_enable(selector) {
 
   // Popup image cropping feature when we click on the contact image.
   // The HTML for the popup itself was added by imagecrop.php in the page footer area.
-  cj('.crm-contact_image img').click(function() {
-    var this_img = cj(this);
+  // cj('.crm-contact_image img').click(function() {
+    var this_img = cj(selector);
 
     cj('.crm-imagecrop-dialog').dialog({
       title: ts("Image editor", {domain: "ca.bidon.imagecrop"}),
@@ -112,6 +115,6 @@ function imagecrop_civicrm_enable(selector) {
         });
       }
     }
-  });
+  // });
 }
 

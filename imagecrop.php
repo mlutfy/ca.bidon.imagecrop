@@ -77,8 +77,26 @@ function imagecrop_civicrm_managed(&$entities) {
  * Add jCrop on selected forms.
  */
 function imagecrop_civicrm_buildForm($formName, &$form) {
-  if ($formName == 'CRM_Contact_Form_Contact') {
-    // imagecrop_civicrm_jcrop_enable();
+  if ($formName == 'CRM_Contact_Form_Contact' || $formName == 'CRM_Profile_Form_Edit') {
+    if (! $form->elementExists('image_URL')) {
+      return;
+    }
+
+    $smarty = CRM_Core_Smarty::singleton();
+    $imageURL = $smarty->_tpl_vars['imageURL'];
+
+    if (! $imageURL) {
+      return;
+    }
+
+    $entity_id = ($formName == 'CRM_Profile_Form_Edit' ? $smarty->_tpl_vars['id'] : $smarty->_tpl_vars['entityID']);
+    imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
+
+    // Assign the cropped image as the normal profile image
+    // We don't have a civi config for the "custom" directory URL, since image_URL stores the
+    // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
+    $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+    $smarty->assign('imageURL', $cropped_imageURL);
   }
 }
 
@@ -91,29 +109,19 @@ function imagecrop_civicrm_pageRun(&$page) {
   $class_name = get_class($page);
 
   if ($class_name == 'CRM_Contact_Page_View_Summary') {
-    // TODO: enable for a specific selector. Currently enables on '.crm-contact_image a img'.
+    // TODO: add support for custom fields
     $smarty = CRM_Core_Smarty::singleton();
     $imageURL = $smarty->_tpl_vars['imageURL'];
 
     if ($imageURL) {
+      $entity_id = $smarty->_tpl_vars['id'];
+      imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
+
       // Assign the cropped image as the normal profile image
       // We don't have a civi config for the "custom" directory URL, since image_URL stores the
       // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
-      $cropDirectoryName = imagecrop_civicrm_get_directory();
-      $filename = basename($imageURL);
-      $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
-      if (file_exists($croppedfilename)) {
-        $cropped_imageURL = preg_replace("/$filename/", "imagecrop/$filename", $imageURL);
-        $smarty->assign('imageURL', $cropped_imageURL);
-      }
-
-      // Image to use for cropping
-      $smarty->assign('imageCropImageURL', $imageURL);
-      imagecrop_civicrm_jcrop_enable();
-
-      // Eventually, we will want to support different entities
-      $smarty->assign('imageCropEntityID', $smarty->_tpl_vars['id']);
-      $smarty->assign('imageCropEntityType', 'Contact');
+      $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+      $smarty->assign('imageURL', $cropped_imageURL);
     }
   }
 }
@@ -121,8 +129,10 @@ function imagecrop_civicrm_pageRun(&$page) {
 /**
  * Generic function to include/add jCrop.
  *
+ * @param selector_image : jquery selector to find the image to crop.
+ * @param selector_link_location : jquery selector to place/append the link "crop image" that triggers the popup.
  */
-function imagecrop_civicrm_jcrop_enable() {
+function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $selector_image, $selector_link_location) {
   CRM_Core_Resources::singleton()
     ->addScriptFile('ca.bidon.imagecrop', 'imagecrop.js')
     ->addStyleFile('ca.bidon.imagecrop', 'imagecrop.css');
@@ -131,6 +141,15 @@ function imagecrop_civicrm_jcrop_enable() {
     ->addScriptFile('ca.bidon.imagecrop', 'jcrop/js/jquery.Jcrop.min.js')
     ->addStyleFile('ca.bidon.imagecrop', 'jcrop/css/jquery.Jcrop.min.css');
 
+  // Image to use for cropping
+  $smarty = CRM_Core_Smarty::singleton();
+  $smarty->assign('imageCropImageURL', $imageURL);
+
+  // Eventually, we will want to support different entities
+  $smarty->assign('imageCropEntityType', $entity_type);
+  $smarty->assign('imageCropEntityID', $entity_id);
+
+  // Add the <div> with the required html for our popup
   CRM_Core_Region::instance('page-body')->add(array(
     'template' => 'CRM/ImageCrop/Ajax/popup.tpl',
   ));
@@ -149,6 +168,8 @@ function imagecrop_civicrm_jcrop_enable() {
       'croparea_x' => $croparea_x,
       'croparea_y' => $croparea_y,
       'resize' => $resize,
+      'selector_image' => $selector_image,
+      'selector_link_location' => $selector_link_location,
     ),
   ));
 }
@@ -165,6 +186,21 @@ function imagecrop_civicrm_get_directory() {
   CRM_Utils_File::createDir($cropDirectoryName);
 
   return $cropDirectoryName;
+}
+
+/**
+ * Returns the URL for a cropped image, if it exists. If not, returns the same URL.
+ */
+function imagecrop_civicrm_get_cropped_image_url($imageURL) {
+  $cropDirectoryName = imagecrop_civicrm_get_directory();
+  $filename = basename($imageURL);
+  $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
+  if (file_exists($croppedfilename)) {
+    $cropped_imageURL = preg_replace("/$filename/", "imagecrop/$filename", $imageURL);
+    return $cropped_imageURL;
+  }
+
+  return $imageURL;
 }
 
 /**
