@@ -83,7 +83,7 @@ function imagecrop_civicrm_buildForm($formName, &$form) {
     }
 
     $smarty = CRM_Core_Smarty::singleton();
-    $imageURL = $smarty->_tpl_vars['imageURL'];
+    $imageURL = CRM_Utils_Array::value('imageURL', $smarty->_tpl_vars);
 
     if (! $imageURL) {
       return;
@@ -116,22 +116,25 @@ function imagecrop_civicrm_pageRun(&$page) {
   if ($class_name == 'CRM_Contact_Page_View_Summary') {
     // TODO: add support for custom fields
     $smarty = CRM_Core_Smarty::singleton();
-    $imageURL = $smarty->_tpl_vars['imageURL'];
 
-    if ($imageURL) {
-      $entity_id = $smarty->_tpl_vars['id'];
-      imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
+    $imageURL = CRM_Utils_Array::value('imageURL', $smarty->_tpl_vars);
 
-      // Assign the cropped image as the normal profile image
-      $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
-      $smarty->assign('imageURL', $cropped_imageURL);
+    if (! $imageURL) {
+      return;
+    }
 
-      if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
-        $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
-        $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
-        $smarty->assign('imageThumbWidth', $croparea_x);
-        $smarty->assign('imageThumbHeight', $croparea_y);
-      }
+    $entity_id = $smarty->_tpl_vars['id'];
+    imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
+
+    // Assign the cropped image as the normal profile image
+    $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+    $smarty->assign('imageURL', $cropped_imageURL);
+
+    if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
+      $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
+      $croparea_y = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_y', NULL, 200);
+      $smarty->assign('imageThumbWidth', $croparea_x);
+      $smarty->assign('imageThumbHeight', $croparea_y);
     }
   }
   elseif ($class_name == 'CRM_Profile_Page_View') {
