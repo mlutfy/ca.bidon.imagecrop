@@ -94,7 +94,11 @@ function imagecrop_civicrm_buildForm($formName, &$form) {
 
     // Assign the cropped image as the normal profile image
     $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+    list($imageWidth, $imageHeight) = getimagesize($cropped_imageURL);
+
     $smarty->assign('imageURL', $cropped_imageURL);
+    $smarty->assign('imageWidth', $imageWidth);
+    $smarty->assign('imageHeight', $imageHeight);
 
     if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
       $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
@@ -128,7 +132,11 @@ function imagecrop_civicrm_pageRun(&$page) {
 
     // Assign the cropped image as the normal profile image
     $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+    list($imageWidth, $imageHeight) = getimagesize($cropped_imageURL);
+
     $smarty->assign('imageURL', $cropped_imageURL);
+    $smarty->assign('imageWidth', $imageWidth);
+    $smarty->assign('imageHeight', $imageHeight);
 
     if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
       $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
@@ -151,8 +159,10 @@ function imagecrop_civicrm_pageRun(&$page) {
 
         // Assign the cropped image as the normal profile image
         $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
+        list($imageWidth, $imageHeight) = getimagesize($cropped_imageURL);
 
         $groups[$key]['content'] = preg_replace("|$imageURL|", $cropped_imageURL, $val['content']);
+        $groups[$key]['content'] = preg_replace("|contactImagePopUp\([^\)]+\)|", "contactImagePopUp(\"$cropped_imageURL\", $imageWidth, $imageHeight)", $groups[$key]['content']);
 
         if (CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'change_thumbnail_size', NULL, FALSE)) {
           $croparea_x = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'croparea_x', NULL, 200);
