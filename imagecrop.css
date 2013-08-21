@@ -15,7 +15,7 @@
   z-index: 2000;
   top: 0;
   // right: -280px;
-  left: 585px;
+  left: 660px;
   padding: 6px;
   border: 1px rgba(0, 0, 0, 0.4) solid;
   background-color: white;
@@ -32,7 +32,7 @@
 /* the "crop" button */
 .crm-imagecrop-dialog .crm-imagecrop-buttons {
   position: absolute;
-  left: 600px;
+  left: 680px;
   padding-top: 2.5em;
   /* These are set in imagecrop.php. We try to make it adaptable to various preview/crop-area dimensions. */
   /* top: $croparea_y px; */
