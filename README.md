@@ -5,9 +5,8 @@ The extension integrates Jcrop with CiviCRM.
 https://github.com/mlutfy/ca.bidon.imagecrop
 
 It allows to crop and scale image fields in CiviCRM.
-For now, it works only with the Contact "image_URL" field.
-
-This is a fairly new extension and has not been widely tested yet.
+For now, it works only with the Contact "image_URL" field
+in contact records view/edit and profile view/edit.
 
 More information about Jcrop can be found here:
 http://deepliquid.com/content/Jcrop_Download.html
@@ -47,7 +46,7 @@ Contributors
 ------------
 
 * CiviCRM extension/integration written by Mathieu Lutfy (http://www.bidon.ca/about)
-* Sponsored in part by Ixiam (http://www.ixiam.com/en)
+* Sponsored by Ixiam (http://www.ixiam.com/en)
 
 Copyright
 ---------
