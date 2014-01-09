@@ -8,8 +8,14 @@
     <author>Mathieu Lutfy</author>
     <email>mathieu@bidon.ca</email>
   </maintainer>
-  <releaseDate>2013-07-29</releaseDate>
-  <version>1.0</version>
+  <urls>
+    <url desc="Main Extension Page">https://github.com/mlutfy/ca.bidon.imagecrop</url>
+    <url desc="Documentation">https://github.com/mlutfy/ca.bidon.imagecrop/blob/master/README.txt</url>
+    <url desc="Support">http://forum.civicrm.org/index.php/board,57.0.html</url>
+    <url desc="Licensing">http://civicrm.org/licensing</url>
+  </urls>
+  <releaseDate>2014-01-09</releaseDate>
+  <version>1.1</version>
   <develStage>alpha</develStage>
   <compatibility>
     <ver>4.2</ver>
