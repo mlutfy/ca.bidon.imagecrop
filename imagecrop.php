@@ -224,6 +224,9 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
   $image_file = imagecrop_civicrm_get_cropped_image_path($imageURL);
   list($imageWidth, $imageHeight) = getimagesize($image_file);
 
+  $imageWidth = round($imageWidth, 0);
+  $imageHeight = round($imageHeight, 0);
+
   // Jcrop will set the aspect ratio of the crop area based on the size of the crop-area preview, specified here
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog-preview-pane .crm-imagecrop-dialog-preview-container { width: ' . $croparea_x . 'px; height: ' . $croparea_y . 'px; overflow: hidden; }');
   CRM_Core_Resources::singleton()->addStyle('.crm-imagecrop-dialog .crm-imagecrop-buttons { top: ' . $croparea_y . 'px; }');

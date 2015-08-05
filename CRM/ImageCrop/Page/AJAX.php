@@ -49,8 +49,8 @@ class CRM_ImageCrop_Page_AJAX {
       $targ_h = CRM_Core_BAO_Setting::getItem(IMAGECROP_SETTINGS_GROUP, 'output_y', NULL, $targ_h);
     }
 
-    $response['width'] = $targ_w;
-    $response['height'] = $targ_h;
+    $response['width'] = round($targ_w, 0);
+    $response['height'] = round($targ_h, 0);
 
     // TODO: add civicrm settings
     $jpeg_quality = 90;
