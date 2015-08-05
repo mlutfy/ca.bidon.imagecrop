@@ -263,10 +263,18 @@ function imagecrop_civicrm_get_cropped_image_url($imageURL) {
   // We don't have a civi config for the "custom" directory URL, since image_URL stores the
   // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
   $cropDirectoryName = imagecrop_civicrm_get_directory();
+
   $filename = basename($imageURL);
-  $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
+
+  if (preg_match('/imagefile\?photo=(.*)/', $filename, $matches)) {
+   $filename = $matches[1];
+  }
+
+  $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . $filename;
+
   if (file_exists($croppedfilename)) {
     $cropped_imageURL = preg_replace("/$filename/", "imagecrop/$filename", $imageURL);
+    $cropped_imageURL = preg_replace('/civicrm\/contact\/imagefile/', 'civicrm/imagecrop/imagefile', $imageURL);
     return $cropped_imageURL;
   }
 
@@ -280,7 +288,13 @@ function imagecrop_civicrm_get_cropped_image_path($imageURL) {
   // We don't have a civi config for the "custom" directory URL, since image_URL stores the
   // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
   $cropDirectoryName = imagecrop_civicrm_get_directory();
+
+  if (preg_match('/imagefile\?photo=(.*)/', $imageURL, $matches)) {
+   $imageURL = $matches[1];
+  }
+
   $filename = basename($imageURL);
+
   $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($imageURL);
   if (file_exists($croppedfilename)) {
     return $croppedfilename;

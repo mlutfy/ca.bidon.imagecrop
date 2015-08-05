@@ -35,6 +35,10 @@ class CRM_ImageCrop_Page_AJAX {
 
     $image_URL = self::getContactField($entity_id, 'image_URL');
 
+    if (preg_match('/imagefile\?photo=(.*)/', $image_URL, $matches)) {
+      $image_URL = $matches[1];
+    }
+
     // The output will default to the selected area in the original size
     // unless the site admin has configured to resize to a specific size.
     $targ_w = $_POST['w'];
@@ -51,8 +55,10 @@ class CRM_ImageCrop_Page_AJAX {
     // TODO: add civicrm settings
     $jpeg_quality = 90;
 
+    $config = CRM_Core_Config::singleton();
+
     // mostly from jCrop demo
-    $img_r = imagecreatefromjpeg($image_URL);
+    $img_r = imagecreatefromjpeg($config->customFileUploadDir . DIRECTORY_SEPARATOR . $image_URL);
     $dst_r = imagecreatetruecolor($targ_w, $targ_h);
 
     imagecopyresampled($dst_r, $img_r, 0, 0, $_POST['x1'], $_POST['y1'], $targ_w, $targ_h, $_POST['w'], $_POST['h']);

@@ -7,6 +7,12 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/imagecrop/imagefile</path>
+    <page_callback>CRM_ImageCrop_Page_ImageFile</page_callback>
+    <title>ImageCrop</title>
+    <access_arguments>*always allow*</access_arguments>
+  </item>
+  <item>
     <path>civicrm/admin/imagecrop</path>
     <page_callback>CRM_ImageCrop_Form_Settings</page_callback>
     <title>ImageCrop Settings</title>

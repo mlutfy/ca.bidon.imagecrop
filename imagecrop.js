@@ -89,9 +89,15 @@ function imagecrop_civicrm_crop_image(selector_image, selector_link_location) {
             if (response.success) {
               cj('.crm-imagecrop-dialog').dialog('close');
 
-              // Update the image that was cropped.
+              // Refresh the image and make sure we call the imagecrop handler.
+              var d = new Date();
+              var img_src = this_img.attr('src');
+              img_src = img_src.replace('civicrm/contact/imagefile', 'civicrm/imagecrop/imagefile');
+              img_src = img_src.replace(/\&t=[0-9]+/, '');
+              img_src += '&t=' + d.getTime();
+
               this_img.hide();
-              this_img.attr('src', response.filename);
+              this_img.attr('src', img_src);
               this_img.fadeIn();
 
               // Update the size of the image

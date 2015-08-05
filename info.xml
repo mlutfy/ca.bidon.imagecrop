@@ -18,9 +18,9 @@
   <version>1.1</version>
   <develStage>alpha</develStage>
   <compatibility>
-    <ver>4.2</ver>
-    <ver>4.3</ver>
     <ver>4.4</ver>
+    <ver>4.5</ver>
+    <ver>4.6</ver>
   </compatibility>
   <comments>Experimental module, has not been tested much.</comments>
   <civix>
