@@ -90,7 +90,7 @@ function imagecrop_civicrm_buildForm($formName, &$form) {
     }
 
     $entity_id = ($formName == 'CRM_Profile_Form_Edit' ? $smarty->_tpl_vars['id'] : $smarty->_tpl_vars['entityID']);
-    imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image');
+    imagecrop_civicrm_jcrop_enable('Contact', $entity_id, $imageURL, '.crm-contact_image a img', '.crm-contact_image-block.crm-contact_image.crm-contact_image-delete');
 
     // Assign the cropped image as the normal profile image
     $cropped_imageURL = imagecrop_civicrm_get_cropped_image_url($imageURL);
