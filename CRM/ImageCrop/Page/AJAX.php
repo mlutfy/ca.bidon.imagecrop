@@ -57,9 +57,17 @@ class CRM_ImageCrop_Page_AJAX {
 
     $config = CRM_Core_Config::singleton();
 
-    // mostly from jCrop demo
-    $img_r = imagecreatefromjpeg($config->customFileUploadDir . DIRECTORY_SEPARATOR . $image_URL);
+    // Mostly from jCrop demo
     $dst_r = imagecreatetruecolor($targ_w, $targ_h);
+    $img_r = self::imageCreateFromAny($config->customFileUploadDir . DIRECTORY_SEPARATOR . $image_URL);
+
+    if (! $img_r) {
+      $response['filename'] = '';
+      $response['success'] = 0;
+
+      echo json_encode($response);
+      CRM_Utils_System::civiExit();
+    }
 
     imagecopyresampled($dst_r, $img_r, 0, 0, $_POST['x1'], $_POST['y1'], $targ_w, $targ_h, $_POST['w'], $_POST['h']);
 
@@ -85,6 +93,37 @@ class CRM_ImageCrop_Page_AJAX {
 
     echo json_encode($response);
     CRM_Utils_System::civiExit();
+  }
+
+  /**
+   * Returns an image resource for further processing.
+   *
+   * Based on an example at:
+   * http://php.net/manual/fr/function.imagecreatefromjpeg.php#110547
+   *
+   * Requires that PHP have exif support.
+   */
+  static function imageCreateFromAny($filepath) {
+    if (! function_exists('exif_imagetype')) {
+      CRM_Core_Error::fatal('The imagecrop CiviCRM extension requires exif support in PHP.');
+    }
+
+    $image_type = exif_imagetype($filepath);
+
+    $allowed_types = array(
+      1 => 'imagecreatefromgif',
+      2 => 'imagecreatefromjpeg',
+      3 => 'imagecreatefrompng',
+    );
+
+    if (! isset($allowed_types[$image_type])) {
+      return FALSE;
+    }
+
+    $f = $allowed_types[$image_type];
+    $img = $f($filepath);
+
+    return $img;
   }
 
   /**
