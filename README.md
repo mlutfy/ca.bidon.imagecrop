@@ -11,18 +11,12 @@ in contact records view/edit and profile view/edit.
 More information about Jcrop can be found here:
 http://deepliquid.com/content/Jcrop_Download.html
 
-Example
--------
-
-Upload an image to a contact record, then click on the image to open
-a popup that allows you to crop the image:
-http://www.bidon.ca/files/civicrm-imagecrop-example.jpg
-
 Installation
 ------------
 
 * Enable this extension in CiviCRM (Administer > System > Extensions)
-* Jcrop is bundled in this extension, to avoid having to download separately.
+
+Jcrop is bundled in this extension, to avoid having to download separately.
 
 Technical details
 -----------------
@@ -35,12 +29,11 @@ A new image is saved in a "imagecrop" subdirectory of customFileUploadDir
 
 The original image is always kept, to reduce the risks in case of mistake.
 The image is swapped when viewing the contact record (in hook_civicrm_pageRun).
-CiviCRM doesn't have a "load" hook for contacts (similar to node_load in Drupal),
-so at some point, we may alter the image_URL value in the database, and assume
-that we can rollback to the original by removing "imagecrop" from the URL.
 
-(it may be cleaner to keep a separate SQL table with the "original" file name,
-but that means adding a lot of code, so will only do it if necessary)
+Since CiviCRM 4.4.5, since we cannot serve images directly from the 'upload'
+directory, this extension implements a Page handler on /civicrm/imagecrop/imagefile
+to serve the cropped image from the 'upload' subdirectory where cropped images
+are stored.
 
 Contributors
 ------------
@@ -51,7 +44,7 @@ Contributors
 Copyright
 ---------
 
-Copyright (C) 2013 Mathieu Lutfy (mathieu@bidon.ca)
+Copyright (C) 2013-2015 Mathieu Lutfy (mathieu@bidon.ca)
 License: AGPL 3
 http://www.bidon.ca/en/about
 
