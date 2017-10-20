@@ -59,9 +59,9 @@ class CRM_ImageCrop_Page_AJAX {
     $config = CRM_Core_Config::singleton();
 
     // Mostly from jCrop demo
-    $dst_r    = imagecreatetruecolor($targ_w, $targ_h);
+    $dst_r = imagecreatetruecolor($targ_w, $targ_h);
     $filepath = $config->customFileUploadDir . DIRECTORY_SEPARATOR . $image_URL;
-    $img_r    = self::imageCreateFromAny($filepath);
+    $img_r = self::imageCreateFromAny($filepath);
 
     if (! $img_r) {
       $response['filename'] = '';
@@ -73,9 +73,9 @@ class CRM_ImageCrop_Page_AJAX {
 
     imagecopyresampled($dst_r, $img_r, 0, 0, $_POST['x1'], $_POST['y1'], $targ_w, $targ_h, $_POST['w'], $_POST['h']);
 
-    $cropDirectoryName  = imagecrop_civicrm_get_directory();
-    $image_type         = $image_type = exif_imagetype($filepath);
-    $filename           = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($image_URL);
+    $cropDirectoryName = imagecrop_civicrm_get_directory();
+    $image_type = exif_imagetype($filepath);
+    $filename = $cropDirectoryName . DIRECTORY_SEPARATOR . basename($image_URL);
 
     // use proper function on image type
     switch ($image_type) {
