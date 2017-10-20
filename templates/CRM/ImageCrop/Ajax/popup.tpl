@@ -12,8 +12,8 @@
     <input type="hidden" name="h" id="crm-imagecrop-h" />
     <input type="hidden" name="w" id="crm-imagecrop-w" />
     <div class="crm-imagecrop-buttons">
-      <input type="submit" value="{ts domain='imagecrop'}Crop{/ts}" />
-      <span class="crm-imagecrop-close"><a href="#">{ts domain='imagecrop'}Close{/ts}</a></span>
+      <input type="submit" value="{ts domain='ca.bidon.imagecrop'}Crop{/ts}" />
+      <span class="crm-imagecrop-close"><a href="#">{ts domain='ca.bidon.imagecrop'}Close{/ts}</a></span>
     </div>
   </form>
   <div class="crm-imagecrop-dialog-main"><img src="{$imageCropImageURL}" /></div>
