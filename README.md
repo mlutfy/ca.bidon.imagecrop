@@ -16,7 +16,7 @@ Installation
 
 * Enable this extension in CiviCRM (Administer > System > Extensions)
 
-Jcrop is bundled in this extension, to avoid having to download separately.
+The Jcrop library is bundled in this extension.
 
 Technical details
 -----------------
@@ -38,17 +38,18 @@ are stored.
 Contributors
 ------------
 
-* CiviCRM extension/integration written by Mathieu Lutfy (http://www.bidon.ca/about)
-* Sponsored by Ixiam (http://www.ixiam.com/en)
+* Mathieu Lutfy (https://www.bidon.ca/en/about)
+* Luciano Spiegel (https://www.ixiam.com/en)
+* Sponsored by Ixiam (https://www.ixiam.com/en)
 
 Copyright
 ---------
 
-Copyright (C) 2013-2015 Mathieu Lutfy (mathieu@bidon.ca)
-License: AGPL 3
-http://www.bidon.ca/en/about
+Copyright (C) 2013-2017 Mathieu Lutfy (mathieu@symbiotic.coop)  
+Copyright (C) 2013-2017 Luciano Spiegel (l.spiegel@ixiam.com)
+
+License: AGPL 3, see LICENSE.txt for details.
 
 Jcrop is free software under MIT License.
 Copyright (c) 2008-2012 Tapmodo Interactive LLC
-http://github.com/tapmodo/Jcrop
-
+https://github.com/tapmodo/Jcrop
