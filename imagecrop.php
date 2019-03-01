@@ -123,6 +123,8 @@ function imagecrop_civicrm_pageRun(&$page) {
 
     $imageURL = CRM_Utils_Array::value('imageURL', $smarty->_tpl_vars);
 
+    $re = '/<a href="([^"]*)"/m';
+    preg_match_all($re, $imageURL, $matches, PREG_SET_ORDER, 0);
     if (! $imageURL) {
       return;
     }
@@ -205,6 +207,11 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
 
   // Image to use for cropping
   $smarty = CRM_Core_Smarty::singleton();
+
+  $re = '/<a href="([^"]*)"/m';
+  preg_match_all($re, $imageURL, $matches, PREG_SET_ORDER, 0);
+  $imageURL = $matches["0"][1];
+
   $smarty->assign('imageCropImageURL', $imageURL);
 
   // Eventually, we will want to support different entities
@@ -251,7 +258,7 @@ function imagecrop_civicrm_jcrop_enable($entity_type, $entity_id, $imageURL, $se
  */
 function imagecrop_civicrm_get_directory() {
   $config = CRM_Core_Config::singleton();
-  $cropDirectoryName = $config->customFileUploadDir . DIRECTORY_SEPARATOR . 'imagecrop';
+  $cropDirectoryName = $config->customFileUploadDir . 'imagecrop';
 
   // Only creates the directory if it does not exist
   CRM_Utils_File::createDir($cropDirectoryName);
@@ -269,15 +276,14 @@ function imagecrop_civicrm_get_cropped_image_url($imageURL) {
 
   $filename = basename($imageURL);
 
-  if (preg_match('/imagefile\?photo=(.*)/', $filename, $matches)) {
+  if (preg_match('/filename\=([^&]*)/', $imageURL, $matches) ) {
    $filename = $matches[1];
   }
 
   $croppedfilename = $cropDirectoryName . DIRECTORY_SEPARATOR . $filename;
 
   if (file_exists($croppedfilename)) {
-    $cropped_imageURL = preg_replace("/$filename/", "imagecrop/$filename", $imageURL);
-    $cropped_imageURL = preg_replace('/civicrm\/contact\/imagefile/', 'civicrm/imagecrop/imagefile', $imageURL);
+    $cropped_imageURL = preg_replace("/civicrm\/file/", "civicrm/imagecrop/imagefile", $imageURL);
     return $cropped_imageURL;
   }
 
@@ -291,8 +297,7 @@ function imagecrop_civicrm_get_cropped_image_path($imageURL) {
   // We don't have a civi config for the "custom" directory URL, since image_URL stores the
   // full URL in the civicrm_contact table. So we preg to insert our "imagecache" suffix in there.
   $cropDirectoryName = imagecrop_civicrm_get_directory();
-
-  if (preg_match('/imagefile\?photo=(.*)/', $imageURL, $matches)) {
+  if (preg_match('/filename\=([^&]*)/', $imageURL, $matches)) {
    $imageURL = $matches[1];
   }
 

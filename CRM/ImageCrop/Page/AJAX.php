@@ -100,7 +100,7 @@ class CRM_ImageCrop_Page_AJAX {
     // If the URL does not have "imagecrop/" in it already, add it.
     if (! preg_match('/\/imagecrop\//', $t)) {
       $b = basename($image_URL);
-      $t = preg_replace('/' . $b . '/', 'imagecrop/' . $b, $t);
+      $t = preg_replace('/' . $b . '_', 'imagecrop/' . $b, $t);
     }
 
     // Add a random bit after the URL to force the browser to reload

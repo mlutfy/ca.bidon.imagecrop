@@ -14,7 +14,7 @@ class CRM_ImageCrop_Page_ImageFile extends CRM_Contact_Page_ImageFile {
   private $ttl = 43200;
 
   public function run() {
-    $photo = CRM_Utils_Request::retrieve('photo', 'String');
+    $photo = CRM_Utils_Request::retrieve('filename', 'String');
 
     if (!preg_match('/^[^\/]+\.(jpg|jpeg|png|gif)$/i', $photo)) {
       CRM_Core_Error::fatal('Malformed photo name');
