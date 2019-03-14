@@ -1,8 +1,8 @@
 CiviCRM image crop extension
 ============================
 
-The extension integrates Jcrop with CiviCRM.
-https://github.com/mlutfy/ca.bidon.imagecrop
+The extension integrates Jcrop with CiviCRM.  
+https://lab.civicrm.org/extensions/imagecrop
 
 It allows to crop and scale image fields in CiviCRM.
 For now, it works only with the Contact "image_URL" field
